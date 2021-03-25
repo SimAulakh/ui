@@ -1,0 +1,128 @@
+---
+openapi: 3.0.0
+info:
+  description: This API provides audit info
+  version: "1.0.0"
+  title: Audit API
+  contact:
+    email: skau181@my.bcit.ca
+paths:
+  /immediate:
+    get:
+      summary: gets an immediate reservation request from history
+      operationId: app.get_immediate_requests
+      description: Gets immediate reservation request from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the immediate request at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a request for immediate reservation
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ImmediateHotelReservation'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /scheduled:
+    get:
+      summary: gets a scheduled reservation request from history
+      operationId: app.get_scheduled_requests
+      description: Gets scheduled request from the event store
+      parameters:
+        - name: index
+          in: query
+          description: Gets the scheduled request at the index in the event store
+          schema:
+            type: integer
+            example: 100
+      responses:
+        '200':
+          description: Successfully returned a scheduled reservation event
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/ScheduledHotelReservation'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Not Found
+
+components:
+  schemas:
+    ImmediateHotelReservation:
+      required:
+        - city
+        - country
+        - customer_id
+        - no_of_days
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+        city:
+          type: string
+          example: vancouver
+        country:
+          type: string
+          example: canada
+        no_of_days:
+          type: number
+          example: 3
+    ScheduledHotelReservation:
+      required:
+        - check_in
+        - check_out
+        - city
+        - country
+        - customer_id
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+        city:
+          type: string
+          example: toronto
+        country:
+          type: string
+          example: canada
+        check_in:
+          type: string
+          format: date
+          example: 2021-01-31
+        check_out:
+          type: string
+          format: date
+          example: 2021-01-31

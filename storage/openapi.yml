@@ -1,0 +1,109 @@
+---
+openapi: 3.0.0
+info:
+  title: requests API
+  description: This API receives immediate and scheduled hotel reservation requests
+  contact:
+    email: skau181@my.bcit.ca
+  version: 1.0.0
+tags:
+- name: devices
+  description: Operations available to devices
+paths:
+  /requests/immediate:
+    get:
+      tags:
+        - devices
+      summary: gets new immediate hotel reservation request
+      operationId: app.get_immediate_requests
+      description: Gets immediate hotel reservation done after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2021-02-18T09:12:33.001Z
+      responses:
+        '200':
+          description: Successfully returned a list of immediate hotel reservation requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImmediateHotelReservation'
+
+  /requests/scheduled:
+
+    get:
+      tags:
+        - devices
+      summary: gets new scheduled hotel reservation request
+      operationId: app.get_scheduled_requests
+      description: Gets scheduled hotel reservation done after a timestamp
+      parameters:
+        - name: timestamp
+          in: query
+          description: Limits the number of items on a page
+          schema:
+            type: string
+            format: date-time
+            example: 2021-02-18T09:12:33.001Z
+      responses:
+        '200':
+          description: Successfully returned a list of scheduled hotel reservation requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScheduledHotelReservation'
+
+components:
+  schemas:
+    ImmediateHotelReservation:
+      required:
+      - city
+      - country
+      - customer_id
+      - no_of_days
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+        city:
+          type: string
+          example: vancouver
+        country:
+          type: string
+          example: canada
+        no_of_days:
+          type: number
+          example: 3
+    ScheduledHotelReservation:
+      required:
+      - check_in
+      - check_out
+      - city
+      - country
+      - customer_id
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+        city:
+          type: string
+          example: toronto
+        country:
+          type: string
+          example: canada
+        check_in:
+          type: string
+          format: date
+          example: 2021-01-31
+        check_out:
+          type: string
+          format: date
+          example: 2021-01-31

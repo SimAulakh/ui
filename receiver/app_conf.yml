@@ -1,0 +1,9 @@
+version: 1
+find_hotels_immediately:
+  url: http://localhost:8090/requests/immediate
+sfind_scheduled_hotels:
+  url: http://localhost:8090/requests/scheduled
+events:
+  hostname: acit3855.westus2.cloudapp.azure.com
+  port: 9092
+  topic: events
