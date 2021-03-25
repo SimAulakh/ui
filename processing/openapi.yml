@@ -1,0 +1,47 @@
+---
+openapi: 3.0.0
+info:
+  title: requests API
+  description: This API provides hotel reservation request stats
+  contact:
+    email: skau181@my.bcit.ca
+  version: 1.0.0
+
+paths:
+  /stats:
+    get:
+      summary: Gets the event stats
+      operationId: app.get_stats
+      description: Gets Immediate and Scheduled hotels processed statistics
+      responses:
+        '200':
+          description: Successfully returned a list of immediate hotels
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  $ref: '#/components/schemas/RequestStats'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+components:
+  schemas:
+    RequestStats:
+      required:
+        - num_imm_requests
+        - num_sch_requests
+      properties:
+        num_imm_requests:
+          type: integer
+          example: 5000
+        num_sch_requests:
+          type: integer
+          example: 4000
+      type: object
